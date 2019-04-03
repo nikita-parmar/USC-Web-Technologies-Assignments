@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Events - HW8</title>
+
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- Angular JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>	
+	
+	<!-- for animation -->
+	<script src="https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Progress round bar -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-svg-round-progressbar/0.4.8/roundProgress.min.js"></script>
+
+	<!-- Google map -->
+ 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByqc69cN16Nwsa8SviTmGd08bf-VHzsJ8&callback=initMap">
+    </script>
+ 
+
+	<style type="text/css">
+		/*//@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+		*/.formdivbox{
+				border: 1px;
+				border-style: solid;
+				background-color: #f2f2f2;
+				border-color: #a6a6a6;
+				margin-top:10px; 
+				z-index: 0;
+		}	
+		.redstar{
+			color: #f00;
+		}
+		.rederror{
+			color: #f00;
+			font-size: 12px;
+		}
+		
+		.favdiv{
+		 	border-radius: 4px;
+		    border: 0.7px solid #999999;
+		    padding-left: 10px;
+		    padding-top: 7px;
+			padding-right: 10px;
+		    padding-bottom: 7px;		 
+		 }   
+
+		 .whitebtn{
+		  	background-color: #fff;
+		  	color:#000;
+		  	border: 1px;
+		  	border-style: solid; 
+		  	border-color: #a6a6a6;
+		 }
+		 .whitebtn:hover{
+		 	background-color: #fff;
+		 	color: #000;
+		 }
+		.boldtext{
+			font-weight: bold;
+		}
+		.resultTabbelowform, .favTabbelowform{
+			width: 80%;
+			margin: auto;
+		}
+	.spacingaround{
+		margin:10px;
+	}
+	.orange{
+		color: #e86b22;
+		text-decoration: none;
+	}
+	.orange:hover{
+		color: #e86b22;	
+		text-decoration: none;
+	}
+
+	.fitimg {
+	    position: relative;
+	    overflow-y: auto;
+	    max-height: 400px;
+	    padding: 15px;
+	}
+	.iconsize{
+		width: 40px;
+		height: 40px;
+	}
+	.twoicons{
+		display: inline-block;
+		float: right;
+	}
+
+	.imposenum{
+		margin-top: -33px;
+		margin-left: 11px;
+	}
+
+	.starcolor{
+		color: yellow;
+	}
+
+	.automcomplist{
+		z-index: 10;
+		padding: 3px;
+		overflow: hidden;
+	}
+	.automcomplist:hover{
+		background-color: #007bff;
+		color: #fff;
+	}
+
+	.norecords{
+		background-color: #f6e8c0;
+		color: #83724b;
+		width: 90%;
+		padding: 10px;
+	}
+.test{
+	margin-top: 10px;
+	margin-bottom: 10px; 
+}
+.tabeventdetails{
+	width: 80%;
+	margin: auto;
+}
+.lastvisit{
+	background-color: #fddb93;
+	opacity: 0.7;
+}
+	</style>
+
+	<script type="text/javascript">
+		//JQUERY
+		$(document).ready(function(){			
+			var isset_keyword = false;
+			var isset_location = true;
+			$('#keyword_error').hide();
+			$('#locationtext_error').hide();    	
+   	    	
+			//Keyword Validation
+			$("#keyword").keyup(function(){
+				if($('#keyword').val().replace(/\s/g, '').length){
+					$('#keyword').css("border", "1px solid #ced4da");
+					$('#keyword_error').hide();	
+					isset_keyword = true;
+					checksearchbtn(isset_keyword,isset_location);	
+				}
+
+			});
+			$('#keyword').focusout(function(){
+				if(!$('#keyword').val().replace(/\s/g, '').length){
+					$('#keyword_error').html("Please enter a keyword");
+					$('#keyword_error').show();
+					$('#keyword').css("border", "solid");
+					$('#keyword').css("border-color", "red");
+					isset_keyword = false;
+					checksearchbtn(isset_keyword,isset_location);	
+
+				}
+				else{
+					$('#keyword_error').hide();					
+					$('#keyword').css("border", "1px solid #ced4da");
+					isset_keyword = true;
+					checksearchbtn(isset_keyword,isset_location);	
+
+				}
+			});
+			//Radio and locationtext validation
+			//On click of 1st radio button
+		    $("#here").click(function(){
+	    	    $('#locationtext').prop('disabled', true);
+	    	    	$('#locationtext').val("");
+	    	    	isset_location = true;
+					checksearchbtn(isset_keyword,isset_location);	
+
+		    });
+	    	//On click of 2nd radio button
+		    $("#location").click(function(){
+		        $('#locationtext').prop('disabled', false);
+				isset_location = false;
+				checksearchbtn(isset_keyword,isset_location);	
+
+				$("#locationtext").keyup(function(){
+					if($('#locationtext').val().replace(/\s/g, '').length){
+						$('#locationtext').css("border", "1px solid #ced4da");
+						$('#locationtext_error').hide();	
+						isset_location = true;
+						checksearchbtn(isset_keyword,isset_location);	
+			
+					}
+				});
+				$('#locationtext').focusout(function(){
+					if(!$('#locationtext').val().replace(/\s/g, '').length){
+						$('#locationtext_error').html("Please enter a location");
+						$('#locationtext_error').show();
+						$('#locationtext').css("border", "solid");
+						$('#locationtext').css("border-color", "red");
+						isset_location = false;
+						checksearchbtn(isset_keyword,isset_location);	
+
+					}
+					else{
+						$('#locationtext_error').hide();					
+						$('#locationtext').css("border", "1px solid #ced4da");
+						isset_location = true;
+						checksearchbtn(isset_keyword,isset_location);	
+					}
+				});
+
+				// if(isset_keyword && isset_location){
+	   //  	    	$('#searchBtnId').prop('disabled', false);
+				// }
+			    $('[data-toggle="tooltip"]').tooltip();   
+		    });
+
+			//Here latitude and longitude and enable search button    
+		    var jsonDoc;
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("GET",'http://ip-api.com/json',false); //open, send, responseText are
+			xmlhttp.send(); //properties of XMLHTTPRequest
+			jsonDoc=xmlhttp.responseText;
+			apijsonObject = JSON.parse(jsonDoc);
+			angular.element(document.querySelector('[ng-controller="appCtrl"]')).scope().latitude = apijsonObject.lat;
+			angular.element(document.querySelector('[ng-controller="appCtrl"]')).scope().longitude = apijsonObject.lon;
+
+
+			// $('#latId').val(apijsonObject.lat);
+			// $('#lonId').val(apijsonObject.lon);
+			
+			function checksearchbtn(isset_keyword,isset_location){
+				if(isset_keyword && isset_location){
+		    	    $('#searchBtnId').prop('disabled', false);
+				}else{
+					$('#searchBtnId').prop('disabled', true);
+				}				
+			}
+
+		});	
+
+		//ANGULAR JS
+		angular.module('appName', ['ngAnimate'])
+
+		.animation('.slide', function() {
+			var NG_HIDE_CLASS = 'ng-hide';
+			return {
+				beforeAddClass: function(element, className, done) {
+					if(className === NG_HIDE_CLASS) {
+						element.slideUp(done);
+					}
+				},
+				removeClass: function(element, className, done) {
+					if(className === NG_HIDE_CLASS) {
+						element.hide().slideDown(done);
+					}
+				}
+			}
+		});
+
+
+
+		var app = angular.module("appName", ['angular-svg-round-progressbar']);
+	
+		app.controller("appCtrl", function($scope, $http) {
+		    $scope.category = "All";    
+		    $scope.startpoint = "here";
+		    $scope.distanceunit = "miles";
+			$scope.sortcategory = "Default";
+	        $scope.ordercategory = "ascending";
+	        $scope.limitvar = 5;
+	        $scope.showMLBtn = "Show More";
+			$scope.iseventlistshow = false;
+			$scope.iseventdetailshow = false;
+			$scope.disableDetailsBtn = true;
+		    $scope.eventdetailTabResponse = "abc";
+			$scope.tweetdata = "";
+		    $scope.allFav = [];
+		    $scope.showprogress = false;
+			$scope.vid = "";
+			$scope.vdate = "";
+			$scope.vname = "";
+			$scope.vgenre = "";
+			$scope.vsubGenre = "";
+ 			$scope.vvenue =  "";
+
+		    $scope.searchButton= function() {
+		    	$scope.showprogress = true;
+				$scope.eventlistResponse = "";
+		  		var distance=$scope.distance;
+				
+				$scope.lastFavId = '';
+				$scope.lastResultId = '';		  		
+		  		$scope.disableDetailsBtn = true;
+
+				$scope.iseventlistshow = true;
+				$scope.iseventdetailshow = false;
+				$scope.isfavoriteshow = false;
+
+				document.getElementById('pills-res-tab').classname = "nav-link active";
+				document.getElementById('pills-fav-tab').classname = "nav-link";
+
+		  		if($scope.distance == undefined){
+		  			distance = 10;
+		  		}
+		  		console.log($scope.latitude);
+		  		console.log($scope.longitude);
+
+		  		var locationtext = "";
+		  		if($scope.locationtext == undefined){
+		  			locationtext = "Nolocation";
+		  		}
+		  		else{
+		  			locationtext = $scope.locationtext;
+		  		}
+		  		console.log(locationtext);
+		  		$scope.myurl = "http://homework8-projec-1541555481784.appspot.com/eventlist/"+ $scope.keyword +"/"+ $scope.category +"/"+ distance +"/"+ $scope.distanceunit +"/"+$scope.latitude+"/"+$scope.longitude+"/"+locationtext;
+		  	    // $scope.myurl = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=M0hmh9XA1IImpyriVwfIpJDzF6ANmoUn&keyword="+ $scope.keyword +"&segmentId="+ category +"&radius="+ distance +"&unit="+ $scope.distanceunit +"&geoPoint=9q5cs";
+  			//	console.log($scope.myurl);
+			    $http.get($scope.myurl).then(function(response) {
+			        $scope.eventlistResponse = response.data.body._embedded.events;				
+			        $scope.removebar_showlist();
+				});					
+    		}
+
+    		$scope.removebar_showlist = function(){
+    			$scope.showprogress = false;
+    			$scope.iseventlistshow = true;
+    		}
+
+    		$scope.detailEvent = function(eventid, date, name, genre, subgenre, venuename, flag){
+ 				$scope.showprogress = true;
+				
+ 				$scope.secondartist = false;
+ 				$scope.disableDetailsBtn = false;		  
+    			$scope.event_model = "Event Model printed in function : " + eventid;
+			
+				$scope.iseventdetailshow = false;
+				$scope.iseventlistshow = false;
+				$scope.isfavoriteshow = false;
+
+				$scope.vid = eventid;
+				$scope.vdate = date;
+				$scope.vname = name;
+				$scope.vgenre = genre;
+				$scope.vsubGenre = subgenre;
+ 				$scope.vvenue =  venuename;
+	
+				$scope.flag = flag;
+				if($scope.flag==1){
+					$scope.lastResultId = eventid;					
+				}else{
+					$scope.lastFavId =  eventid;
+				}
+				
+    			$scope.eventTabUrl = "http://homework8-projec-1541555481784.appspot.com/eventdetail/"+eventid;
+	    		console.log($scope.eventTabUrl);
+
+    			$http.get($scope.eventTabUrl).then(function(response) {
+			        $scope.eventdetailTabResponse = response.data.body;
+				
+					$scope.tweetdata = "Check out "+ $scope.eventdetailTabResponse.name +" located at "+ $scope.eventdetailTabResponse._embedded.venues[0].name +". Website: "+ $scope.eventdetailTabResponse.url +"&hashtags=CSCI571EventSearch";
+					//Call Venue Detail Function
+					$scope.doVenueTab($scope.vvenue);
+					
+					//Call Artist and Team Detail Function
+					$scope.doArtistTeamTab($scope.eventdetailTabResponse._embedded.attractions[0].name);				
+					
+					if($scope.eventdetailTabResponse._embedded.attractions.length>1){
+						$scope.secondartist = true;
+						$scope.doArtistTeamTab2($scope.eventdetailTabResponse._embedded.attractions[1].name);	
+					}
+					if($scope.eventdetailTabResponse._embedded.attractions.length>2){
+						$scope.thirdartist = true;
+						$scope.doArtistTeamTab3($scope.eventdetailTabResponse._embedded.attractions[2].name);	
+					}
+
+					//Call Upcoming Events Detail Function
+					$scope.doUpcomingEventTab1($scope.eventdetailTabResponse._embedded.venues[0].name);
+					
+					$scope.showprogress = false;
+					$scope.iseventdetailshow = true;				
+					});		
+						
+    		}
+
+	    		$scope.doVenueTab = function(venuename){
+	    			console.log(venuename);			
+					$scope.venueTabUrl = "http://homework8-projec-1541555481784.appspot.com/venuedetail/"+venuename;
+					$http.get($scope.venueTabUrl).then(function(response) {
+				        $scope.venuedetailTabResponse1 = response.data.body;
+				      	$scope.venuedetailTabResponse = $scope.venuedetailTabResponse1._embedded.venues[0]
+						console.log($scope.venueTabUrl);
+						jslat =  $scope.venuedetailTabResponse.location.latitude;
+						jslon =  $scope.venuedetailTabResponse.location.longitude;
+						console.log(jslat);
+						console.log(jslon);
+						initMap();
+					});
+				};
+
+				//YOU HAVE TO CHANGE THE PARAMETER
+	    		$scope.doArtistTeamTab = function(anartist){
+					
+					$scope.googleartistsTeamsTabUrl = "http://homework8-projec-1541555481784.appspot.com/gcustomsearch/"+ anartist;
+					$http.get($scope.googleartistsTeamsTabUrl).then(function(response) {
+				        $scope.artistsTeamsResponse = response.data.body;
+				        console.log($scope.googleartistsTeamsTabUrl);
+					});
+					
+					if($scope.eventdetailTabResponse.classifications[0].segment.name == 'Music'){
+						$scope.spotifyartistsTeamsTabUrl = "http://homework8-projec-1541555481784.appspot.com/spotify/"+ anartist;
+						console.log($scope.spotifyartistsTeamsTabUrl);
+						$http.get($scope.spotifyartistsTeamsTabUrl).then(function(response) {
+					        $scope.spotifyResponse = response.data.message.artists.items[0];
+							console.log($scope.spotifyartistsTeamsTabUrl);
+
+						//	console.log($scope.roundProgressConfig.current);
+						//	console.log(roundProgressConfig);
+							
+						//	$scope.roundProgressConfig.current = $scope.spotifyResponse.popularity;
+					   });						
+					}
+
+				};
+
+
+				$scope.doArtistTeamTab2 = function(anartist){
+					$scope.googleartistsTeamsTabUrl2 = "http://homework8-projec-1541555481784.appspot.com/gcustomsearch/"+ anartist;
+					$http.get($scope.googleartistsTeamsTabUrl2).then(function(response) {
+				        $scope.artistsTeamsResponse2 = response.data.body;
+					});
+					
+					if($scope.eventdetailTabResponse.classifications[0].segment.name == 'Music'){
+						$scope.spotifyartistsTeamsTabUrl2 = "http://homework8-projec-1541555481784.appspot.com/spotify/"+ anartist;
+						console.log($scope.spotifyartistsTeamsTabUrl2);
+						$http.get($scope.spotifyartistsTeamsTabUrl2).then(function(response) {
+					        $scope.spotifyResponse2 = response.data.message.artists.items[0];
+							console.log($scope.spotifyResponse2.popularity);
+						//	console.log($scope.roundProgressConfig.current);
+						//	console.log(roundProgressConfig);
+							
+						//	$scope.roundProgressConfig.current = $scope.spotifyResponse.popularity;
+					   });						
+					}
+				};
+
+				$scope.doArtistTeamTab3 = function(anartist){
+					$scope.googleartistsTeamsTabUrl3 = "http://homework8-projec-1541555481784.appspot.com/gcustomsearch/"+ anartist;
+					$http.get($scope.googleartistsTeamsTabUrl3).then(function(response) {
+				        $scope.artistsTeamsResponse3 = response.data.body;
+					});
+					
+					if($scope.eventdetailTabResponse.classifications[0].segment.name == 'Music'){
+						$scope.spotifyartistsTeamsTabUrl3 = "http://homework8-projec-1541555481784.appspot.com/spotify/"+ anartist;
+						console.log($scope.spotifyartistsTeamsTabUrl3);
+						$http.get($scope.spotifyartistsTeamsTabUrl3).then(function(response) {
+					        $scope.spotifyResponse3 = response.data.message.artists.items[0];
+							console.log($scope.spotifyResponse3.popularity);
+						//	console.log($scope.roundProgressConfig.current);
+						//	console.log(roundProgressConfig);
+							
+						//	$scope.roundProgressConfig.current = $scope.spotifyResponse.popularity;
+					   });						
+					}
+				};
+
+				//Upcoming Events tab
+				$scope.doUpcomingEventTab1 = function(venuename){
+					//Upcoming Events tab
+					$scope.songkickUrl = "http://homework8-projec-1541555481784.appspot.com/songkick/"+venuename;
+					console.log($scope.songkickUrl);
+					$http.get($scope.songkickUrl).then(function(response) {
+			        	$scope.songkickInfo = response.data.body.resultsPage.results.event;
+			        	$scope.ascending = true;
+			        	$scope.orderByVar = "null";
+					});
+				};
+
+			$scope.showML = function(arraylen, elementevent)
+			{
+				if($scope.limitvar == 5){
+					$scope.limitvar = arraylen;
+					$scope.showMLBtn = "Show Less";				
+				}else{
+					$scope.limitvar = 5;
+					$scope.showMLBtn = "Show More";
+				}
+			};
+
+			$scope.goBack = function(){
+				$scope.iseventdetailshow = false;
+				if($scope.flag==1){
+					$scope.iseventlistshow = true;
+					$scope.isfavoriteshow = false;					
+				}else{
+					$scope.iseventlistshow = false;
+					$scope.isfavoriteshow = true;
+				}
+			};
+			
+			$scope.gotoDetails = function(){
+				$scope.iseventdetailshow = true;
+				$scope.iseventlistshow = false;
+				$scope.isfavoriteshow = false;	
+			};
+			
+			$scope.isfav = function(eventid){
+
+				 if(localStorage.getItem(eventid)){
+				 	return true;
+				 }else{
+ 				 	return false;
+				}
+			}
+			$scope.removefavclicked = function(id){
+				console.log("In remove fav");
+				localStorage.removeItem(id);
+
+				for (var i = 0; i < $scope.allFav.length; i++) {
+				    if($scope.allFav[i].eid == id){
+				    	$scope.allFav.splice(i,1);				    	
+				    }
+				  }
+				console.log("in remove display:");  					
+				console.log($scope.allFav);  						
+			}
+
+			$scope.addTofavclicked = function(id, date, name, genre,subgenre, venue){
+				if(localStorage.getItem(id)){
+					//Already in favs
+					console.log("Already in favs, do not add again");
+				}else{
+					console.log("Adding in fav");
+					var jsonobj = {};
+					jsonobj.eid = id;
+					jsonobj.ename = name;
+					jsonobj.egenre = genre;
+					jsonobj.esubgenre = subgenre;
+					jsonobj.evenue = venue;
+					jsonobj.edate = date;
+					console.log("jsonobj");
+					console.log(jsonobj);
+
+					localStorage.setItem(id, JSON.stringify(jsonobj));
+					
+					console.log("Get item");
+					console.log(localStorage.getItem(id));
+
+	 				$scope.allFav.push(jsonobj);					
+					console.log("allfav");
+	 				console.log($scope.allFav);  					
+				}
+			}
+			$scope.displayAllFav = function(){
+				console.log("In display all");
+				$scope.disableDetailsBtn = true;
+				$scope.iseventlistshow = false;
+				$scope.iseventdetailshow = false;
+				$scope.isfavoriteshow = true;
+				$scope.iseventdetailshow = false;
+				var values = [],
+        		keys = Object.keys(localStorage),
+        		i = keys.length;
+			    while ( i-- ) {
+        			values.push( JSON.parse(localStorage.getItem(keys[i])));
+    			}
+    			$scope.allFav = values;
+			} 
+			$scope.resultsButton = function(){
+				$scope.iseventlistshow = true;
+				$scope.iseventdetailshow = false;
+				$scope.isfavoriteshow = false;
+				$scope.disableDetailsBtn = true;				
+			};
+
+			// $scope.favButton = function(){
+			// 	$scope.iseventlistshow = false;
+			// 	$scope.iseventdetailshow = false;
+			// 	$scope.isfavoriteshow = true;
+			// };
+
+			$scope.clearall = function(){
+				$scope.iseventlistshow = false;
+				$scope.iseventdetailshow = false;
+				$scope.isfavoriteshow = false;
+				
+				$scope.keyword = "";
+			    $scope.category = "All";    
+			    $scope.startpoint = "here";
+			    $scope.distanceunit = "miles";
+			    $scope.distance = "";
+			    $scope.locationtext = "";
+
+			}
+		}); 
+	
+
+		app.filter('upperfirst', function() {
+		    return function(input) {
+		      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+		    }
+		});
+
+		app.filter('mylimit35', function() {
+		    return function(x) {
+		        if(x.length > 35){
+		        	if(x.charAt(35) == ' '){
+		 //       		console.log("case 1");
+		        		return x.substring(0,35)+"..." ;
+		        	}
+		        	else{
+		     //   		console.log("case 2");
+		        		for (var i = 34; i > 0; i--) {
+		        			if(x.charAt(i) == ' '){
+				        		return x.substring(0,i)+"...";
+		        			}
+		        		}		        		
+		        	}
+		        }
+		        else{
+		   //     	console.log("case 3");
+		        	return x;
+		        }
+
+
+		        var i, c, txt = "";
+		        for (i = 0; i < x.length; i++) {
+		            c = x[i];
+		            if (i % 2 == 0) {
+		                c = c.toUpperCase();
+		            }
+		            txt += c;
+		        }
+		        return txt;
+		    };
+		});
+		
+		//JAVASCRIPT
+		var jslat =  '34.0294';
+		var jslon =  '-118.2871';
+						
+		function orderByChange(){
+			var selectedval = document.getElementById("sortcategory").value;
+			if(selectedval == 'Default'){
+				document.getElementById("ordercategory").disabled = true;
+			}else{
+				document.getElementById("ordercategory").disabled = false;
+			}
+		}
+
+		function myinitmap(){
+			console.log("In myinitmap");
+
+		}
+		 function initMap() {
+			console.log("In initmap");
+			 var myLatLng = {lat: parseFloat(jslat), lng: parseFloat(jslon)};
+	         var map = new google.maps.Map(document.getElementById('mymap'), {
+	          zoom: 15,
+	          center: myLatLng
+	        });
+
+	        var marker = new google.maps.Marker({
+	          position: myLatLng,
+	          map: map,
+	          title: 'Hello World!'
+	        });
+		 }
+
+	</script>
+</head>
+<body id="bodyappid" ng-app="appName" ng-controller="appCtrl">
+<!-- 	 <div id="map"></div> -->
+	<!-- WHILE FORM DIV -->
+
+	<div class="FormResultFav">
+		<div class="formdivbox container rounded col-xs-12 col-md-6" >
+			<h5 style="text-align: center;padding-top: 20px;">Entertainment Event Ticket Search</h5>
+		
+			<form id="myform" >
+				<!-- Keyword -->
+				<div class="form-group row">
+				  	<div class="col-md-1"></div>
+				    <label class="col-md-2 col-form-label 
+				    col-form-label-sm">Keyword <span class="redstar">*</span></label>
+				    <div class="col-md-8">
+				     	<input type="text" id="keyword" class="form-control form-control-sm" name="keyword" placeholder="Enter Artist, Team or Event Name (eg. Lakers)" ng-model="keyword" />
+				     <span id="keyword_error" class="rederror"></span>
+				    
+				    </div>
+				</div>
+  
+				<!-- Category drop down -->
+			    <div class="form-group row">
+				  	<div class="col-md-1"></div>
+				    <label class="col-md-2 col-form-label col-form-label-sm">Category</label>
+				    <div class="col-md-3">
+				    	<select  class="form-control form-control-sm" name="category" id="category" ng-model="category">
+						    <option value="All">All</option>
+						    <option value="KZFzniwnSyZfZ7v7nJ">Music</option>
+						    <option value="KZFzniwnSyZfZ7v7nE">Sports</option>
+						    <option value="KZFzniwnSyZfZ7v7na">Arts & Theatre</option>
+						    <option value="KZFzniwnSyZfZ7v7nn">Film</option>
+						    <option value="KZFzniwnSyZfZ7v7n1">Miscellaneous</option>    
+						</select>
+			    	</div>
+			    </div>
+
+			    <!-- Distance text plus drop down -->
+	     		<div class="form-group row">
+					<div class="col-md-1"></div>
+				    <label class="col-md-2 col-form-label col-form-label-sm">Distance</label>
+			    	<div class="col-md-3">
+			      		<input type="text" class="form-control form-control-sm" name="distance" placeholder="10" ng-model="distance" />
+			    	</div>  
+				    <div class="col-md-3">
+		    		    <select  class="form-control form-control-sm" name="distanceunit" id="distanceunit" ng-model="distanceunit" >
+						    <option value="miles">Miles</option>
+						    <option value="km">Kilometers</option>
+						</select>
+				 	</div>
+				</div>
+
+				<!-- Start point here -->
+				<div class="form-group row" style="margin-bottom: 0px;">
+				  	<div class="col-md-1"></div>
+				    <label class="col-md-2 col-form-label col-form-label-sm">From <span class="redstar">*</span></label>
+				    <div class="form-check">
+			        	<input class="form-check-input" type="radio" name="startpoint" id="here" value="here" ng-model="startpoint" checked />
+			          	<label class="form-check-label">Current Location</label>
+			        </div>
+			    </div>
+
+				<!-- Start point not here -->
+				<div class="form-group row" style="margin-bottom: 0px;">
+					<div class="col-md-3"></div>
+			        <div class="form-check" style="margin-bottom: 0px;">
+			          <input class="form-check-input" type="radio" name="startpoint" id="location" value="location" ng-model="startpoint" />
+			          <label class="form-check-label">
+			            Others,please specify:
+			          </label>
+			        </div>
+				</div>
+
+				<!-- Location text -->
+				<div class="form-group row">
+					<div class="col-md-3"></div>
+				     	<input type="text" class="form-control form-control-sm col-md-8" name="locationtext" id="locationtext" disabled="false" ng-model="locationtext" />
+				     <div class="col-md-3"></div>
+			     	<span id="locationtext_error" class="rederror"></span>
+			    </div>
+
+				 <input type="text" name="latitude" id="latId" style="display:none;" ng-model="latitude" />
+				 <input type="text" name="longitude" id="lonId" style="display:none;" ng-model="longitude" />
+
+				<!-- Search and Clear button -->
+	     		<div class="form-group row">
+				    <div class="col-md-1"></div>
+				    <button type="submit" id="searchBtnId" class="btn btn-primary" style="margin-right:10px;" ng-click="searchButton()" disabled="true" ><span class="material-icons" style="float:left;">search</span><span style="float:left;">Search</span></button>
+
+					<button type="reset" id="resetBtnId" class="btn btn-secondary whitebtn" ng-click="clearall()"><span class="material-icons" style="float:left;">clear_all</span><span style="float:left;">Clear</span></button>
+				</div>
+			</form>
+		</div>
+
+		
+		<!-- Results and Favorite Buttons -->
+		<ul class="nav nav-pills mb-3 justify-content-center" style="text-align: center;margin-top: 20px;">
+		  	<li class="nav-item">
+		    	<a class="nav-link active" id="pills-res-tab" data-toggle="pill" href="#pills-res" ng-click="resultsButton()" role="tab" aria-controls="pills-res" aria-selected="true">Results</a>
+		  	</li>
+		  	<li class="nav-item">
+		    	<a class="nav-link" id="pills-fav-tab" data-toggle="pill" href="#pills-fav" ng-click="displayAllFav()" role="tab" aria-controls="pills-fav" aria-selected="false" >Favorites</a>
+		  	</li>
+		</ul>
+
+		<div id="outerprogressdiv" ng-if="showprogress" style="width: 75%;margin: auto; display:block; ">
+			<div class="progress">
+			  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+			</div>	
+		</div>
+ 
+		<div class="tab-content" id="bothTabData">
+		  	<div class="tab-pane fade show active" id="pills-res" role="tabpanel" aria-labelledby="pills-home-tab">
+		  		<div class="resultTabbelowform conainer">	
+		
+					<!-- EVENT LIST TABLE -->
+					<div class="eventlistclass animate-hide" ng-show="iseventlistshow">
+						
+						<!-- Details Button -->
+						<div style="float:right">
+							<button id="detailsId" class="btn whitebtn" style="margin-bottom: 20px;" ng-click="gotoDetails()" ng-disabled = "disableDetailsBtn"><span class="material-icons" style="float:right;">chevron_right</span><span style="float:left;">Details</span></button>	
+						</div>							
+						
+					<div class="text-nowrap">
+						<!--  List of Events -->
+						<div ng-if="eventlistResponse">
+							<table class="eventlist table table-hover">
+							<tr class="boldtext">
+								<td>#</td>
+								<td>Date</td>                                                                                   <td>Event</td>
+								<td>Category</td>
+								<td>Venue Info</td>
+								<td>Favorite</td>
+							</tr>
+							<tr ng-repeat="anevent in eventlistResponse" ng-class="{lastvisit: lastResultId == anevent.id}">
+								<td class="boldtext">{{ $index +1 }}</td>
+								<td  ng-if="anevent.dates.start.localDate">{{ anevent.dates.start.localDate }}</td>
+								<td ng-if="!anevent.dates.start.localDate"></td>
+
+								<td ng-if="anevent.name" class="text-primary" ng-click="detailEvent(anevent.id, anevent.dates.start.localDate, anevent.name, anevent.classifications[0].genre.name, anevent.classifications[0].subGenre.name, anevent._embedded.venues[0].name,1)" data-toggle="tooltip" data-placement="bottom" title="{{ anevent.name }}">{{ anevent.name | mylimit35 }}</td>
+								<td ng-if="!anevent.name"></td>
+							
+								<td ng-if="anevent.classifications[0].genre.name && anevent.classifications[0].subGenre.name">{{ anevent.classifications[0].genre.name }} - {{ anevent.classifications[0].subGenre.name }}</td>
+								<td ng-if="anevent.classifications[0].genre.name && !anevent.classifications[0].subGenre.name">{{ anevent.classifications[0].genre.name }}</td>
+								<td ng-if="!anevent.classifications[0].genre.name && anevent.classifications[0].subGenre.name">{{ anevent.classifications[0].subGenre.name }}</td>
+								<td ng-if="!anevent.classifications[0].genre.name && !anevent.classifications[0].subGenre.name"></td>
+
+								<td ng-if="anevent._embedded.venues[0].name">{{ anevent._embedded.venues[0].name }}</td>
+								<td ng-if="!anevent._embedded.venues[0].name"></td>
+																
+								<td ng-if="isfav(anevent.id)" ng-click="removefavclicked(anevent.id)" ><i id="starIconId" class="favdiv material-icons starcolor">star</i></td>
+								<td ng-if="!isfav(anevent.id)" ng-click="addTofavclicked(anevent.id, anevent.dates.start.localDate, anevent.name, anevent.classifications[0].genre.name, anevent.classifications[0].subGenre.name, anevent._embedded.venues[0].name)" ><i id="starIconId" class="favdiv material-icons">star_border</i></td>								
+							</tr>			
+						</table>
+	
+						</div> <!-- end of ng if event list present -->
+					</div>
+						<div class="norecords" ng-if="!eventlistResponse">
+							No records.
+						</div>
+					</div> <!-- END EVENT LIST TABLE --> 
+
+
+				</div> <!-- result tab below form -->
+			</div>
+		  	
+		  	<div class="tab-pane fade" id="pills-fav" role="tabpanel" aria-labelledby="pills-profile-tab">
+			  	<div class="favTabbeloform" ng-show="isfavoriteshow">
+						<!-- FAV DATA BEGINS -->
+						<!-- Details Button -->
+						
+						<div style="width: 80%; margin: auto;">
+							<div style="float:right">
+								<button id="detailsId" class="btn whitebtn" style="margin-bottom: 20px;" ng-click="gotoDetails()" ng-disabled = "disableDetailsBtn"><span class="material-icons" style="float:right;">chevron_right</span><span>Details</span></button>	
+							</div>
+							<!--  List of Fav Events -->
+							<div ng-if="allFav.length>0" >
+								<div class="text-nowrap">		
+									<table class="eventlist table table-hover">
+										<tr class="boldtext">
+											<td>#</td>
+											<td>Date</td>
+											<td>Event</td>
+											<td>Category</td>
+											<td>Venue Info</td>
+											<td>Favorite</td>
+										</tr>
+
+										<tr ng-repeat="afavevent in  allFav" ng-class="{lastvisit: lastFavId == afavevent.eid}">
+											<td class="boldtext">{{ $index +1 }}</td>
+											<td>{{ afavevent.edate }}</td>
+											<td class="text-primary" ng-click="detailEvent(afavevent.eid, afavevent.edate, afavevent.ename, afavevent.egenre, afavevent.esubgenre ,afavevent.evenue, 2)" data-toggle="tooltip" data-placement="bottom" title="{{ afavevent.ename }}">{{ afavevent.ename | mylimit35 }}</td>								
+											<td ng-if="afavevent.egenre && afavevent.esubgenre">{{ afavevent.egenre }} - {{ afavevent.esubgenre }}</td>
+											<td ng-if="afavevent.egenre && !afavevent.esubgenre">{{ afavevent.egenre }}</td>
+											<td ng-if="!afavevent.egenre && afavevent.esubgenre">{{ afavevent.esubgenre }}</td>
+											
+											<td>{{ afavevent.evenue }}</td>
+																			
+											<td ng-click="removefavclicked(afavevent.eid)" ><i id="trashiconid" class="favdiv material-icons">delete</i></td>								
+										</tr>			
+									</table>
+								</div>
+							</div> <!-- end of ng if event list present -->	
+							
+							<div class="norecords" ng-if="allFav.length==0">
+								No records.
+							</div>
+
+						</div>
+						
+
+
+					</div> <!-- END FAV EVENT LIST TABLE --> 
+
+					<!-- FAV EVENTS DETAILS -->
+
+
+				</div>
+		  	</div>
+		</div>
+
+	</div> <!-- END WHILE FORM DIV -->
+		
+			<!--TABS EVENT DETAILS -->
+		<div class="tabeventdetails animate-hide" ng-show="iseventdetailshow">
+			<!-- Favorite and Twitter Icon -->
+			<div style="display:inline-block;">
+				<button id="backId" class="btn btn-secondary whitebtn" style="margin-bottom: 20px;" ng-click="goBack()"><span class="material-icons" style="float:left; ">chevron_left</span><span>List</span></button>	
+			</div>
+
+			<div style="display:inline-block;float:right; margin-left:10px;">
+				<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={{ tweetdata }}" target="_blank">
+					<img src="http://csci571.com/hw/hw8/Images/Twitter.png" class="iconsize">
+				</a>
+			</div>
+			<div ng-if="vid!=''" style="display:inline-block;float:right;">	
+				<div ng-if="isfav(vid)" ng-click="removefavclicked(vid)" ><i id="starIconId" class="favdiv material-icons starcolor">star</i></div>
+				<div ng-if="!isfav(vid)" ng-click="addTofavclicked(vid, vdate, vname, vgenre, vsubGenre, vvenue)" ><i id="starIconId" class="favdiv material-icons">star_border</i></div>
+			</div>
+
+			<!-- TABS -->
+			<div class="myNavBar">
+				<!-- Tab Headers -->
+				<nav>
+				  	<div class="nav nav-tabs" id="nav-tab" role="tablist" style="justify-content: right">
+					    <a class="nav-item nav-link active" id="eventTab" data-toggle="tab" href="#eventdata" role="tab" aria-controls="nav-home" aria-selected="true">Event</a>
+					    <a class="nav-item nav-link" id="artistTeamTab" data-toggle="tab" href="#artist_teamdata" role="tab" aria-controls="nav-profile" aria-selected="false">Artist/Teams</a>
+					    <a class="nav-item nav-link" id="venueTab" data-toggle="tab" href="#venuedata" role="tab" aria-controls="nav-contact" aria-selected="false">Venue</a>
+					    <a class="nav-item nav-link" id="upcomingEventTab" data-toggle="tab" href="#upcoming_eventsdata" role="tab" aria-controls="nav-contact" aria-selected="false">
+							<div class="d-none d-md-block">Upcoming Events</div>
+							<div class="d-md-none">Upcoming</div>
+						</a>
+					</div>
+				</nav>
+
+				<div class="tab-content" id="nav-tabContent">
+				  	
+					<!-- Event Tab Data -->
+				  	<div class="tab-pane fade show active" id="eventdata" role="tabpanel" aria-labelledby="eventTab">
+						<div ng-if="eventdetailTabResponse">
+							<div class="text-nowrap">
+								<table class="table table-striped">
+									
+									<tr ng-if="eventdetailTabResponse._embedded.attractions">
+										<td class="boldtext">Artist/Team(s)</td>
+										<td>
+											<span ng-repeat="anArtistOrTeam in eventdetailTabResponse._embedded.attractions">
+												{{ anArtistOrTeam.name }} 
+												<span ng-if="$index < eventdetailTabResponse._embedded.attractions.length - 1">
+													|
+												</span>
+											</span>
+										</td>
+									</tr>
+
+									<!-- Venue Name -->
+									<tr ng-if="eventdetailTabResponse._embedded.venues[0].name">
+										<td class="boldtext">Venue</td>
+										<td>{{ eventdetailTabResponse._embedded.venues[0].name }}</td>
+									</tr>
+
+									<!-- Date -->
+									<tr ng-if="eventdetailTabResponse.dates.start.localDate">
+										<td class="boldtext">Time</td>
+										<td>{{ eventdetailTabResponse.dates.start.localDate | date : "MMM d, y h:mm:ss" }}</td>
+									</tr>
+
+									<!-- Segement and Genre -->
+									<tr ng-if="eventdetailTabResponse.classifications[0].segment.name && eventdetailTabResponse.classifications[0].genre.name">
+										<td class="boldtext">Category</td>
+										<td>{{ eventdetailTabResponse.classifications[0].segment.name }} | {{ eventdetailTabResponse.classifications[0].genre.name }}</td>
+									</tr>
+									<tr ng-if="!eventdetailTabResponse.classifications[0].segment.name && eventdetailTabResponse.classifications[0].genre.name">
+										<td class="boldtext">Category</td>
+										<td>{{ eventdetailTabResponse.classifications[0].genre.name }}</td>
+									</tr>
+									<tr ng-if="eventdetailTabResponse.classifications[0].segment.name && !eventdetailTabResponse.classifications[0].genre.name">
+										<td class="boldtext">Category</td>
+										<td>{{ eventdetailTabResponse.classifications[0].segment.name }}</td>
+									</tr>
+
+									<!-- Price range max min -->
+									<tr ng-if="eventdetailTabResponse.priceRanges[0].min && eventdetailTabResponse.priceRanges[0].max" >
+										<td class="boldtext">Price Range</td>
+										<td>{{ eventdetailTabResponse.priceRanges[0].min | currency }} ~ {{ eventdetailTabResponse.priceRanges[0].max | currency }}</td>
+									</tr>
+									<tr ng-if="eventdetailTabResponse.priceRanges[0].min && !eventdetailTabResponse.priceRanges[0].max" >
+										<td class="boldtext">Price Range</td>
+										<td>{{ eventdetailTabResponse.priceRanges[0].min | currency }}</td>
+									</tr>
+									<tr ng-if="!eventdetailTabResponse.priceRanges[0].min && eventdetailTabResponse.priceRanges[0].max" >
+										<td class="boldtext">Price Range</td>
+										<td>{{ eventdetailTabResponse.priceRanges[0].max | currency }}</td>
+									</tr>
+
+									<!-- Status code onsale offsale-->
+									<tr ng-if="eventdetailTabResponse.dates.status.code">
+										<td class="boldtext">Ticket Status</td>
+										<td>{{ eventdetailTabResponse.dates.status.code | upperfirst}}</td>
+									</tr>
+
+									<!-- Buy ticket at ticketmaster link -->
+									<tr ng-if="eventdetailTabResponse.url">
+										<td class="boldtext">Buy Ticket at</td>
+										<td><a href="{{ eventdetailTabResponse.url }}" target="_blank">Ticketmaster</a></td>						
+									</tr>
+
+									<!-- Seat map -->
+									<tr ng-if="eventdetailTabResponse.seatmap.staticUrl">
+										<td class="boldtext">Seat Map</td>
+										<td><span class="text-primary" data-toggle="modal" data-target="#seatmapmodal">View Seat Map Here</span>
+											<div class="modal" id="seatmapmodal">
+											    <div class="modal-dialog">
+											      	<div class="modal-content">								  
+												        <div class="modal-header">
+												          <h4 class="modal-title">View Seat Map</h4>
+												          <button type="button" class="close" data-dismiss="modal">&times;</button>
+												        </div>
+												 
+												        <div class="modal-body fitimg">
+												          <a href="{{ eventdetailTabResponse.seatmap.staticUrl }}" target="_blank">
+												          	<img class="img-responsive img-thumbnail" src="{{ eventdetailTabResponse.seatmap.staticUrl }}">
+												          </a>
+												        </div>
+												        
+												        <div class="modal-footer">
+												          <button type="button" class="btn btn-secondary whitebtn" data-dismiss="modal">Close</button>
+												        </div>        
+											    	</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>											
+							</div>
+
+				
+						</div> <!-- end of ng if  -->
+						<div class="norecords" ng-if="!eventdetailTabResponse">
+							No records.
+						</div>
+					</div> <!-- Event tab data -->
+				  
+				 <!--Start Artist/Teams tab data -->
+				<div ng-model="artistTeam_model" class="tab-pane fade row1" id="artist_teamdata" role="tabpanel" aria-labelledby="artistTeamTab">
+					<div style="padding-top:20px; padding-bottom:10px; text-align: center;font-size: 18px; font-weight: bold;">{{ eventdetailTabResponse._embedded.attractions[0].name }}</div>	
+				<div ng-if="eventdetailTabResponse.classifications[0].segment.name == 'Music' && spotifyResponse">
+					<div class="spotifydiv">
+						<table class="table table-striped">
+							<tr ng-if="spotifyResponse.name">
+								<td class="boldtext">
+									Name
+								</td>
+								<td>
+									{{ spotifyResponse.name }}
+								</td>
+							</tr>
+							<tr ng-if="spotifyResponse.followers.total">
+								<td class="boldtext">
+									Followers
+								</td>
+								<td>
+									{{ spotifyResponse.followers.total | number }}												
+								</td>
+							</tr>
+							<tr ng-if="spotifyResponse.popularity">
+								<td class="boldtext">
+									Popularity
+								</td>
+								<td>
+									<round-progress
+									    max=100
+									    current=spotifyResponse.popularity
+									    color="#43d729"
+									    bgcolor="#eaeaea"
+									    radius="20"
+									    stroke="3"
+									    clockwise="false" >	
+									</round-progress>
+									<div class="imposenum"> {{spotifyResponse.popularity}} </div>
+									
+								</td>
+							</tr>
+							<tr ng-if="spotifyResponse.external_urls.spotify">
+								<td class="boldtext">
+									Check At
+								</td>
+								<td>
+									<a href="{{ spotifyResponse.external_urls.spotify }}" target="_blank">Spotify</a>		
+								</td>
+							</tr>
+						</table>
+					</div> 	
+				</div>
+					<div class="googlecustomsearch row col-md-12">
+						<div class="col-md">
+							<div ng-if="artistsTeamsResponse.items[0]">
+						  		<a href="{{ artistsTeamsResponse.items[0].link }}"><img src="{{artistsTeamsResponse.items[0].link}}" class="img-fluid test"></a>
+						  	</div>
+							<div ng-if="artistsTeamsResponse.items[3]">
+						  		<a href="{{ artistsTeamsResponse.items[3].link }}"><img src="{{artistsTeamsResponse.items[3].link}}" class="img-fluid test"></a>
+						  	</div>
+						</div>
+						<div class="col-md">
+							<div ng-if="artistsTeamsResponse.items[1]">
+						  		<a href="{{ artistsTeamsResponse.items[1].link }}"><img src="{{artistsTeamsResponse.items[1].link}}" class="img-fluid test"></a>
+						  	</div>
+					  		<div ng-if="artistsTeamsResponse.items[4]">
+					  			<a href="{{ artistsTeamsResponse.items[4].link }}"><img src="{{artistsTeamsResponse.items[4].link}}" class="img-fluid test"></a>
+					  		</div>
+					  		<div ng-if="artistsTeamsResponse.items[6]">
+					  			<a href="{{ artistsTeamsResponse.items[6].link }}"><img src="{{artistsTeamsResponse.items[6].link}}" class="img-fluid test"></a>
+					  		</div>
+						</div>
+						<div class="col-md">
+							<div ng-if="artistsTeamsResponse.items[2]">
+						  		<a href="{{ artistsTeamsResponse.items[2].link }}"><img src="{{artistsTeamsResponse.items[2].link}}" class="img-fluid test"></a>
+						  	</div>
+		  				  	<div ng-if="artistsTeamsResponse.items[5]">
+						  		<a href="{{ artistsTeamsResponse.items[5].link }}"><img src="{{artistsTeamsResponse.items[5].link}}" class="img-fluid test"></a>
+						  	</div>
+						  		<div ng-if="artistsTeamsResponse.items[7]">
+						  		<a href="{{ artistsTeamsResponse.items[7].link }}"><img src="{{artistsTeamsResponse.items[7].link}}" class="img-fluid test"></a>
+						  	</div>
+						</div>	
+					</div>
+
+					
+					<!-- Second artists -->
+					<div ng-if="secondartist">
+							<div style="padding-top:20px; padding-bottom:10px; text-align: center;font-size: 18px; font-weight: bold;">{{ eventdetailTabResponse._embedded.attractions[1].name }}</div>
+						<div ng-if="eventdetailTabResponse.classifications[0].segment.name == 'Music' && spotifyResponse2">
+							<div class="spotifydiv">
+								<table class="table table-striped">
+									<tr ng-if="spotifyResponse2.name">
+										<td class="boldtext">
+											Name
+										</td>
+										<td>
+											{{ spotifyResponse2.name }}
+										</td>
+									</tr>
+									<tr ng-if="spotifyResponse2.followers.total">
+										<td class="boldtext">
+											Followers
+										</td>
+										<td>
+											{{ spotifyResponse2.followers.total | number }}												
+										</td>
+									</tr>
+									<tr ng-if="spotifyResponse2.popularity">
+										<td class="boldtext">
+											Popularity
+										</td>
+										<td>
+											<round-progress
+											    max=100
+											    current=spotifyResponse2.popularity
+											    color="#43d729"
+											    bgcolor="#eaeaea"
+											    radius="20"
+											    stroke="3"
+											    clockwise="false" >	
+											</round-progress>
+											<div class="imposenum"> {{spotifyResponse2.popularity}} </div>
+											
+										</td>
+									</tr>
+									<tr ng-if="spotifyResponse2.external_urls.spotify">
+										<td class="boldtext">
+											Check At
+										</td>
+										<td>
+											<a href="{{ spotifyResponse2.external_urls.spotify }}" target="_blank">Spotify</a>		
+										</td>
+									</tr>
+								</table>
+							</div> 	
+						</div>
+						<div class="googlecustomsearch row col-md-12">
+							<div class="col-md">
+								<div ng-if="artistsTeamsResponse2.items[0]">
+							  		<a href="{{ artistsTeamsResponse2.items[0].link }}"><img src="{{artistsTeamsResponse2.items[0].link}}" class="img-fluid test"></a>
+							  	</div>
+								<div ng-if="artistsTeamsResponse2.items[3]">
+							  		<a href="{{ artistsTeamsResponse2.items[3].link }}"><img src="{{artistsTeamsResponse2.items[3].link}}" class="img-fluid test"></a>
+							  	</div>
+							</div>
+							<div class="col-md">
+								<div ng-if="artistsTeamsResponse2.items[1]">
+							  		<a href="{{ artistsTeamsResponse2.items[1].link }}"><img src="{{artistsTeamsResponse2.items[1].link}}" class="img-fluid test"></a>
+							  	</div>
+						  		<div ng-if="artistsTeamsResponse2.items[4]">
+						  			<a href="{{ artistsTeamsResponse2.items[4].link }}"><img src="{{artistsTeamsResponse2.items[4].link}}" class="img-fluid test"></a>
+						  		</div>
+						  		<div ng-if="artistsTeamsResponse2.items[6]">
+						  			<a href="{{ artistsTeamsResponse2.items[6].link }}"><img src="{{artistsTeamsResponse2.items[6].link}}" class="img-fluid test"></a>
+						  		</div>
+							</div>
+							<div class="col-md">
+								<div ng-if="artistsTeamsResponse2.items[2]">
+							  		<a href="{{ artistsTeamsResponse2.items[2].link }}"><img src="{{artistsTeamsResponse2.items[2].link}}" class="img-fluid test"></a>
+							  	</div>
+			  				  	<div ng-if="artistsTeamsResponse2.items[5]">
+							  		<a href="{{ artistsTeamsResponse2.items[5].link }}"><img src="{{artistsTeamsResponse2.items[5].link}}" class="img-fluid test"></a>
+							  	</div>
+							  		<div ng-if="artistsTeamsResponse2.items[7]">
+							  		<a href="{{ artistsTeamsResponse2.items[7].link }}"><img src="{{artistsTeamsResponse2.items[7].link}}" class="img-fluid test"></a>
+							  	</div>
+							</div>	
+						</div>
+					</div>
+
+
+					<!-- Third artists -->
+					<div ng-if="thirdartist">
+							<div style="padding-top:20px; padding-bottom:10px; text-align: center;font-size: 18px; font-weight: bold;">{{ eventdetailTabResponse._embedded.attractions[2].name }}</div>
+						<div ng-if="eventdetailTabResponse.classifications[0].segment.name == 'Music' && spotifyResponse3">
+							<div class="spotifydiv">
+								<table class="table table-striped">
+									<tr ng-if="spotifyResponse3.name">
+										<td class="boldtext">
+											Name
+										</td>
+										<td>
+											{{ spotifyResponse3.name }}
+										</td>
+									</tr>
+									<tr ng-if="spotifyResponse3.followers.total">
+										<td class="boldtext">
+											Followers
+										</td>
+										<td>
+											{{ spotifyResponse3.followers.total | number }}												
+										</td>
+									</tr>
+									<tr ng-if="spotifyResponse3.popularity">
+										<td class="boldtext">
+											Popularity
+										</td>
+										<td>
+											<round-progress
+											    max=100
+											    current=spotifyResponse3.popularity
+											    color="#43d729"
+											    bgcolor="#eaeaea"
+											    radius="20"
+											    stroke="3"
+											    clockwise="false" >	
+											</round-progress>
+											<div class="imposenum"> {{spotifyResponse3.popularity}} </div>
+											
+										</td>
+									</tr>
+									<tr ng-if="spotifyResponse3.external_urls.spotify">
+										<td class="boldtext">
+											Check At
+										</td>
+										<td>
+											<a href="{{ spotifyResponse3.external_urls.spotify }}" target="_blank">Spotify</a>		
+										</td>
+									</tr>
+								</table>
+							</div> 	
+						</div>
+						<div class="googlecustomsearch row col-md-12">
+							<div class="col-md">
+								<div ng-if="artistsTeamsResponse3.items[0]">
+							  		<a href="{{ artistsTeamsResponse3.items[0].link }}"><img src="{{artistsTeamsResponse3.items[0].link}}" class="img-fluid test"></a>
+							  	</div>
+								<div ng-if="artistsTeamsResponse3.items[3]">
+							  		<a href="{{ artistsTeamsResponse3.items[3].link }}"><img src="{{artistsTeamsResponse3.items[3].link}}" class="img-fluid test"></a>
+							  	</div>
+							</div>
+							<div class="col-md">
+								<div ng-if="artistsTeamsResponse3.items[1]">
+							  		<a href="{{ artistsTeamsResponse3.items[1].link }}"><img src="{{artistsTeamsResponse3.items[1].link}}" class="img-fluid test"></a>
+							  	</div>
+						  		<div ng-if="artistsTeamsResponse3.items[4]">
+						  			<a href="{{ artistsTeamsResponse3.items[4].link }}"><img src="{{artistsTeamsResponse3.items[4].link}}" class="img-fluid test"></a>
+						  		</div>
+						  		<div ng-if="artistsTeamsResponse3.items[6]">
+						  			<a href="{{ artistsTeamsResponse3.items[6].link }}"><img src="{{artistsTeamsResponse3.items[6].link}}" class="img-fluid test"></a>
+						  		</div>
+							</div>
+							<div class="col-md">
+								<div ng-if="artistsTeamsResponse3.items[2]">
+							  		<a href="{{ artistsTeamsResponse3.items[2].link }}"><img src="{{artistsTeamsResponse3.items[2].link}}" class="img-fluid test"></a>
+							  	</div>
+			  				  	<div ng-if="artistsTeamsResponse3.items[5]">
+							  		<a href="{{ artistsTeamsResponse3.items[5].link }}"><img src="{{artistsTeamsResponse3.items[5].link}}" class="img-fluid test"></a>
+							  	</div>
+							  		<div ng-if="artistsTeamsResponse3.items[7]">
+							  		<a href="{{ artistsTeamsResponse3.items[7].link }}"><img src="{{artistsTeamsResponse3.items[7].link}}" class="img-fluid test"></a>
+							  	</div>
+							</div>	
+						</div>
+					</div>
+
+					<div class="norecords" ng-if="!artistsTeamsResponse">
+						No records.
+					</div>
+
+				  </div> <!-- Artist/Teams tab data -->
+				 
+				  <!--Start Venue tab data -->
+				  <div ng-model="venue_model" class="tab-pane fade" id="venuedata" role="tabpanel" aria-labelledby="venueTab">
+				  	
+				  	<div style="padding-top:20px; padding-bottom:10px; text-align: center;font-size: 18px; font-weight: bold;">{{ venuedetailTabResponse.name }}</div>
+				  	<table class="table table-striped" >					  		
+				  		<!-- Address line1 -->
+				  		<tr ng-if="venuedetailTabResponse.address.line1">
+				  			<td class="boldtext">Address</td>
+				  			<td>{{ venuedetailTabResponse.address.line1 }}</td>
+				  		</tr>
+
+				  		<!-- City and State -->
+				  		<tr ng-if="venuedetailTabResponse.city.name && venuedetailTabResponse.state.name ">
+				  			<td class="boldtext">City</td>
+				  			<td>{{ venuedetailTabResponse.city.name }}, {{ venuedetailTabResponse.state.name }}</td>
+				  		</tr>
+						<tr ng-if="venuedetailTabResponse.city.name && !venuedetailTabResponse.state.name ">
+				  			<td class="boldtext">City</td>
+				  			<td>{{ venuedetailTabResponse.city.name }}</td>
+				  		</tr>
+				  		<tr ng-if="!venuedetailTabResponse.city.name && venuedetailTabResponse.state.name ">
+				  			<td class="boldtext">City</td>
+				  			<td>{{ venuedetailTabResponse.state.name }}</td>
+				  		</tr>
+
+				  		<!-- Phone Number -->
+				  		<tr ng-if="venuedetailTabResponse.boxOfficeInfo.phoneNumberDetail">
+				  			<td class="boldtext">Phone Number</td>
+				  			<td>{{ venuedetailTabResponse.boxOfficeInfo.phoneNumberDetail }}</td>
+				  		</tr>
+
+				  		<!-- Open Hours -->
+				  		<tr ng-if="venuedetailTabResponse.boxOfficeInfo.openHoursDetail">
+				  			<td class="boldtext">Open Hours</td>
+				  			<td>{{ venuedetailTabResponse.boxOfficeInfo.openHoursDetail }}</td>
+				  		</tr>
+				  		
+				  		<!-- General Rules -->
+				  		<tr ng-if="venuedetailTabResponse.generalInfo.generalRule">
+				  			<td class="boldtext">General Rules</td>
+				  			<td>{{ venuedetailTabResponse.generalInfo.generalRule }}</td>
+				  		</tr>
+
+				  		<!-- Child Rules -->
+				  		<tr ng-if="venuedetailTabResponse.generalInfo.childRule">
+				  			<td class="boldtext">Child Rules</td>
+				  			<td>{{ venuedetailTabResponse.generalInfo.childRule }}</td>
+				  		</tr>
+				  	</table>
+				  	  <div id="mymap" style="height: 400px;width: 100%;"></div>
+
+					<div class="norecords" ng-if="!venuedetailTabResponse">
+						No records
+					</div>
+				    </div> <!-- Venue tab data -->
+	
+				  <!--Start Upcoming event tab data -->
+				    <div ng-model="upcomingevent_model" class="tab-pane fade" id="upcoming_eventsdata" role="tabpanel" aria-labelledby="upcomingEventTab" style="margin-top: 10px;">
+							<div ng-if="songkickInfo">
+  								<div class="orderby_reverse col-md-12 col-sm-12">
+						  		<select  class="form-control form-control-sm col-sm-12 col-md-3" name="sortcategory" id="sortcategory" ng-model="sortcategory" style="display: inline-block;" onchange="orderByChange()">
+								    <option value="Default" ng-click="ordervar ='null'">Default</option>
+								    <option value="EventName" ng-click="ordervar ='displayName'">Event Name</option>
+								    <option value="Time" ng-click="ordervar ='datetime'">Time</option>
+								    <option value="Artist" ng-click="ordervar ='performance[0].displayName'">Artist</option>
+								    <option value="Type" ng-click="ordervar ='type'">Type</option>
+								</select>
+
+
+								<select  class="form-control form-control-sm col-sm-12 col-md-3" name="ordercategory" id="ordercategory" ng-model="ordercategory" style="display: inline-block;" disabled="true">
+								    <option value="ascending" ng-click="asc_desc=false">Ascending</option>
+								    <option value="descending" ng-click="asc_desc=true">Descending</option>
+								</select>
+							</div>
+						<!-- Initial 5 always shown -->
+						<div ng-repeat="anupcomingevent in songkickInfo | orderBy: ordervar : asc_desc | limitTo: limitvar ">
+							<div class="card spacingaround">
+								<div class="card-body">
+									<span class="text-primary boldtext">{{ anupcomingevent.displayName }}</span>	
+									<div>
+										<span class="boldtext"><a class="orange" href="{{ anupcomingevent.uri }}" target="_blank">Artist: {{ anupcomingevent.performance[0].displayName }}</a></span>
+										<span class="text-secondary">{{ anupcomingevent.start.date | date : "MMM d, y"}} {{ anupcomingevent.start.time }} </span>
+									</div>
+									<span class="boldtext">Type: {{ anupcomingevent.type }}</span>
+							  	</div>
+							</div>					
+						</div>
+
+						<div ng-repeat="anupcomingevent in songkickInfo | orderBy: ordervar : asc_desc | limitTo: limitvar : 5">
+							<div class="card spacingaround">
+								<div class="card-body">
+									<span class="text-primary boldtext">{{ anupcomingevent.displayName }}</span>	
+									<div>
+										<span class="boldtext"><a class="orange" href="{{ anupcomingevent.uri }}" target="_blank">Artist: {{ anupcomingevent.performance[0].displayName }}</a></span>
+										<span class="text-secondary">{{ anupcomingevent.start.date | date : "MMM d, y"}} {{ anupcomingevent.start.time }} </span>
+									</div>
+									<span class="boldtext">Type: {{ anupcomingevent.type }}</span>
+							  	</div>
+							</div>					
+						</div>
+
+
+						<div style="text-align: center; padding-bottom: 10px;">
+							<button id="showML" class="btn btn-primary" ng-bind="showMLBtn" ng-click="showML(songkickInfo.length, $event)">Show More</button>	
+						</div>    	<!--  <button>Show Less</button> -->
+					
+							</div> <!-- end of ngif of upcoming events -->
+
+						<div class="norecords" ng-if="!songkickInfo">
+							No records.
+						</div>
+				  </div> <!-- Upcoming event tab data -->
+
+				</div>
+			</div> <!-- nav bar outer div -->	
+		</div> <!--END TABS EVENT DETAILS -->	
+
+
+	</body>
+</html> 
+
