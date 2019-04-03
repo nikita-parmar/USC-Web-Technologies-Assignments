@@ -1,0 +1,314 @@
+body{
+	font-family: Arial, Helvetica, sans-serif;
+	max-width: 1263px;
+	width: 1263px;
+	background-color: #fff;
+	margin:auto;
+	overflow-x: hidden;
+}
+
+div.topNavBar{
+	margin-right: 90px;
+	margin-left: 90px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	overflow: hidden;
+}
+
+div.menu{
+	color:#000;
+	font-size: 16px;
+	display: inline-block;
+}
+
+div.topRightNavBar{
+	font-size: 14px;
+	display: inline-block; 
+	position: absolute;
+}
+
+a.about{
+	margin-left: 810px;	
+}
+
+a.projects{
+	margin-left: 875px;
+}
+a.services{
+	margin-left: 950px;
+}
+a.about,a.projects,a.services{
+	padding-left: 20px;
+	color: #c0c0c0;
+	font-size: 14px;
+	display: inline-block; 
+	font-weight: bold;
+	text-decoration: none;
+	position: absolute;
+}
+
+a.about:hover,a.projects:hover,a.services:hover{
+	color: #000;
+}
+
+img.onlyImg{
+	background-size: cover;
+	width: 1330px;
+ 
+ 	background-position: center;
+	position: relative;
+	left: 0;
+}
+
+div.imgAndSignUp{
+	position: absolute;
+	background-color: #fff;
+}
+
+form {
+    position:absolute; 
+    top: 110px;
+    left: 90px;
+    display:inline-block;
+   	width: 300px;
+    height: 320px;
+    background-color: #11405E;
+    padding: 40px;
+}
+
+.text1{
+	color:#fff; 
+	font-weight: bold; 
+	font-size: 15px;
+	margin-bottom: 5px;
+}
+.text2{
+	color:#fff;
+	font-weight: bold;
+	font-size: 30px;
+	margin-bottom: 20px; 
+}
+.text3{
+	color: #fbdf00;
+	font-style: italic;
+	font-size: 12px;
+	margin-bottom: 20px;
+}
+
+.text4{
+	width: 100%;
+	height: 40px;
+	margin-bottom: 20px;
+}
+
+.text5{
+	background-color: #fbdf00;
+	font-size: 12px;
+	height: 35px;
+	width: 50%;
+	border: none;
+    cursor: pointer;
+}
+
+.text5:hover{
+	background-color: #001a33;
+	color: #fff;
+}
+
+.section {
+    float: left;
+    width: 300px;
+    padding: 10px;
+    height: 300px; 
+}
+
+.threeparts{
+	width: 1263px;
+	height: 250px;
+	margin-top: 900px;	
+	margin-right: 70px;
+	margin-left: 70px;
+}
+
+.section{
+	width: 350px;
+	padding-right: 25px;
+}
+
+.featureTitle{
+	font-size: 18px;
+}
+
+.para{
+	color: #808080;
+	font-size: 13px;
+}
+
+.greysection{
+	background-color: #ececec;
+	width: 1263px;
+	height:350px;
+	text-align: center;
+}
+
+.inQuote{
+	padding-top: 160px;
+	padding-bottom: 10px;
+}
+
+.john{
+	display: inline-block;
+	position: relative;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+.ceo{
+	display: inline-block;
+	position: relative;
+	font-size: 13px;
+	color: #666666;
+}
+
+.glasses {
+    position: relative;
+	background-image: linear-gradient(
+      rgba(192, 192, 192, 0.9), rgba(192, 192, 192, 0.9)),url(glasses.png);
+	background-attachment: fixed;
+    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center; 
+}
+
+.glassescontent{
+		text-align: center;
+		display: inline-block;	
+}   
+	
+.pricehead1{
+	padding-top: 60px;
+	padding-bottom: 10px;
+	font-size: 25px;
+	color: #000;
+}
+
+.pricehead2{
+	font-size: 15px;
+	color: #808080;
+}
+
+.threeprices{
+	width: 1263px;
+	height:500px;
+	padding-top: 70px;
+	padding-bottom: 40px;
+	text-align: center;
+	display: inline-block;
+}
+
+.gridsection{
+	width: 300px;
+	height: 480px;
+	background-image: linear-gradient(
+      rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(http://csci571.com/hw/hw3/images/grid.png);
+	display: inline-block;
+	position: relative;
+	margin: 20px;	
+}
+
+.planname{
+	font-size: 20px;
+	margin-top: 70px;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+.allfeatures{
+	font-size: 15px;
+	color: #666666;
+}
+
+.features{
+	padding: 10px;
+}
+
+.price{
+	margin-top: 35px;
+	margin-bottom: 30px;
+	font-size: 25px;
+	font-weight:bold;
+}
+
+.buybutton{
+	color: #fff;
+	background-color: #11405E;
+	font-size: 13px;
+	height: 40px;
+	width: 100px;
+	border: none;
+
+}
+
+.buybutton:hover{
+	background-color: #081d2b;	
+}
+
+.notebook{
+	width: 1263px;
+	height:500px;
+	position: absolute;
+	background-image: linear-gradient(
+      rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)),url(notebook.jpg);
+	color: #fff;
+	background-position: center;
+	background-size: cover;
+	text-align: center;
+}
+
+.trytitle{
+	padding-top: 170px;
+	font-size: 20px;
+	padding-bottom: 10px;
+}
+.tryline{
+	font-size: 10px;
+	padding-bottom: 30px;
+}
+
+.trybutton{
+	background-color: #fbdf00;
+	font-size: 13px;
+	font-weight: bold;
+	height: 40px;
+	width: 200px;
+	border: none; 
+}
+
+.trybutton:hover{
+	background-color: #081d2b;
+	color: #fff;
+}
+
+.lastpatch{
+	width: 1263px;
+	height:270px;
+	margin-top:500px;
+	position: absolute; 
+	background-color: #1E2430; 
+	color: #fff;
+	text-align: center;
+}
+.lastTitle{
+	padding-top: 80px;
+	padding-bottom: 5px;
+	font-size: 20px;
+}
+.address{
+	font-size: 10px;
+	padding-bottom: 30px;
+}
+
+.sm1,.sm2,.sm3,.sm4,.sm5{
+	padding-left: 22px;
+}
+
