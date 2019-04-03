@@ -1,0 +1,131 @@
+<html>
+	<head>
+		<style type="text/css">
+			body{
+				width: 100%;
+				margin-top: 200px;
+				text-align: center;
+			}
+			.submitbutton,.inputtext{
+				margin: 5px;
+				padding: 5px;
+			}
+
+			table{
+				width: 100%;
+			}
+			
+			table, th, td {
+    			border: 1px solid black;
+    		}
+		</style>
+
+		<script type="text/javascript">
+			function validation_popup(form) {
+			    var jsonFileName = document.forms["queryform"]["inputFileName"].value;
+			    console.log(jsonFileName)
+			    
+			    if (jsonFileName == "") {
+			        alert("Please enter the file name!");
+			        return false;
+			    } 
+			    else if (UrlExists(jsonFileName)){
+				   		jsonString = loadJSON (jsonFileName);
+					    window.makeTable(jsonString);
+					 	return false;	
+			   	}
+		   		else{
+			   		alert("No such file exists. Please enter a valid JSON file name");
+				 	return false;
+		   		}
+		    }
+			
+			function loadJSON (url) {
+				var jsonDoc;
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open("GET",url,false); //open, send, responseText are
+				xmlhttp.send(); //properties of XMLHTTPRequest
+				jsonDoc=xmlhttp.responseText;
+				return jsonDoc;
+			}
+
+			function UrlExists(fileurl)
+			{
+			    var http = new XMLHttpRequest();
+			    http.open('HEAD', fileurl, false);
+				try {
+				    http.send();
+				    if (http.status != 404){
+		   	            return true;
+				    }
+				} catch (e) {
+	         		console.log(e.name);   // Network Error	         		
+	         		return false;
+				}
+				return false;
+			}
+
+			function makeTable(jsonString){
+				var jsonObj = JSON.parse(jsonString);
+
+				//NO WORD ROW
+				if(Object.keys(jsonObj.Mainline.Table).length == 1){
+					alert("This JSON file does not contain any ship companies (No Rows)");					
+				}
+				else{
+					var htmlDoc = "<table border=1><col width='10%'><col width='5%'><col width='30%'><col width='5%'><col width='15%'><col width='30%'><tr style='font-weight:bold;'>";
+					
+					//MAKING HEADER
+					for (i = 0; i < jsonObj.Mainline.Table.Header.Data.length; i++) {
+						htmlDoc += "<td>" + jsonObj.Mainline.Table.Header.Data[i] + "</td>";
+					}
+
+					htmlDoc += "</tr>";
+
+					// DISPLAYING ALL ROWS 
+					for (var i = 0; i < jsonObj.Mainline.Table.Row.length; i++) {
+						htmlDoc += "<tr>";
+						htmlDoc += "<td>" + jsonObj.Mainline.Table.Row[i].Company + "</td>";
+
+						htmlDoc += "<td>" + jsonObj.Mainline.Table.Row[i].Ships + "</td>";
+						
+						htmlDoc += "<td><ul>";
+
+						//HUBS
+						for (var j = 0; j < jsonObj.Mainline.Table.Row[i].Hubs.Hub.length; j++){
+							if (j != 0) {
+								htmlDoc +=  "<li>" + jsonObj.Mainline.Table.Row[i].Hubs.Hub[j] + "</li>";
+							}
+							else{
+								htmlDoc +=  "<li style='font-weight:bold;'>" + jsonObj.Mainline.Table.Row[i].Hubs.Hub[j] + "</li>";
+							}
+						}
+
+						htmlDoc += "</ul></td>";
+						htmlDoc += "<td>" + jsonObj.Mainline.Table.Row[i].Market + "</td>";
+						htmlDoc += "<td><a href= '" + jsonObj.Mainline.Table.Row[i].HomePage + "' >" + jsonObj.Mainline.Table.Row[i].HomePage + "</td>";
+						htmlDoc += "<td><img src='" + jsonObj.Mainline.Table.Row[i].Logo + "' style='width:270px; height: 150px'></td>";
+						
+						htmlDoc += "</tr>";
+
+					}						
+					htmlDoc += "</table>";
+
+					var newwindow = window.open("", "Table_Popup_Window", "width=1200,height=700,scrollbars,resizeable");
+					newwindow.document.open();
+					newwindow.document.write(htmlDoc);
+					newwindow.document.close();
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<h2>Enter URL for Container Shipping Companies List JSON File</h2>
+		<form name="queryform" onsubmit="return validation_popup(this)">
+     		<input type="text" name="inputFileName" placeholder="Enter json file name" class="inputtext">
+     		<br>
+	     	<input type="submit" value="Submit" class="submitbutton">	
+     	</form>
+	</body>
+</html>
