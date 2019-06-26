@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelArtist"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Artist/Team(s)"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataArtist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelVenue"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Venue"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataVenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelTime"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelCategory"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelPrice"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Price Range"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelStatus"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Ticket Status"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelBuy"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Buy Ticket At"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/dataBuy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/labelSeatmap"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Seat Map"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/dataSeatmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"/>
+    </LinearLayout>
+
+</LinearLayout>

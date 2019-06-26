@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/nameLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelName"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addressLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelAddress"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/dataAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cityLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelCity"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="City"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/phoneLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelPhone"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hoursLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelHours"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Opening Hours"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/generalLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelGeneral"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="General Rule"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/childLLId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/labelChild"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Child Rule"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="500dp" />
+
+    </LinearLayout>
+</ScrollView>

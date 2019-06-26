@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/artistHeaderId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:id="@+id/spotifySectionId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/spotify1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/labelArtistName"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataArtistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/spotify2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/labelArtistFollowers"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Followers"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataArtistFollowers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/spotify3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/labelArtistPopularity"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Popularity"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataArtistPopularity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/spotify4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/labelArtistCheckat"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Check At"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/dataArtistCheckat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/gcustomSectionId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgId1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="5dp"/>
+
+        <ImageView
+            android:id="@+id/imgId2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="5dp" />
+        <ImageView
+            android:id="@+id/imgId3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"/>
+
+        <ImageView
+            android:id="@+id/imgId4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="5dp" />
+        <ImageView
+            android:id="@+id/imgId5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"/>
+
+        <ImageView
+            android:id="@+id/imgId6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true" />
+        <ImageView
+            android:id="@+id/imgId7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:id="@+id/imgId8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
+
+</LinearLayout>
