@@ -12,5 +12,7 @@ Built a PHP backed website to search for upcoming events at the given location. 
 Assignment 4:
 Same concept website as Assignment 3, but using AngularJS for the the frontend and sending API calls using Node.js. Additional feature of 'Favorites' added allowing users to mark events important to them by using Local Storage. 
 
+Assignment 5:
+Android application for the same backed by Node.js server created. Made use of Recycler View, Nav Tabs and Picasso and Volley Libraries.  
 
 
